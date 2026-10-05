@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mani's Kitchen | Your number one food plug in Ho</title>
+<meta name="description" content="Fried rice, jollof rice and angwamo in Ho. Order on WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --espresso:#3A170D;
+    --maroon:#6B2815;
+    --rust:#B8431C;
+    --amber:#EE8F2D;
+    --butter:#F7C95C;
+    --cream:#FBF0DA;
+    --paper:#FFF8E9;
+    --brush:'Caveat Brush','Segoe Print','Marker Felt','Comic Sans MS',cursive;
+    --sans:'Bricolage Grotesque','Avenir Next','Segoe UI',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);background:var(--cream);color:var(--espresso);line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:96px}
+  a{color:inherit}
+  button{font:inherit;cursor:pointer}
+  :focus-visible{outline:3px solid var(--amber);outline-offset:3px;border-radius:6px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+  .brush-edge{filter:url(#rough)}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+  /* top bar */
+  header{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+  .logo{font-family:var(--brush);font-size:2rem;line-height:.85;color:var(--rust);text-decoration:none;transform:rotate(-3deg);display:inline-block}
+  .logo span{display:block;color:var(--espresso);font-size:1.55rem;margin-left:14px}
+  .tag{font-family:var(--brush);font-size:1.2rem;background:var(--maroon);color:var(--cream);padding:8px 18px 8px 16px;position:relative;display:inline-flex;align-items:center;gap:8px}
+  .tag svg{width:18px;height:18px;fill:var(--amber)}
+  nav{display:flex;gap:22px;font-weight:600;font-size:.95rem}
+  nav a{text-decoration:none;border-bottom:2px solid transparent}
+  nav a:hover{border-color:var(--rust)}
+
+  /* hero */
+  .hero{padding:34px 0 70px;position:relative}
+  .hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:30px;align-items:center}
+  .banner{position:relative;display:inline-block;padding:26px 54px 34px 44px;transform:rotate(-2.5deg);isolation:isolate}
+  .banner::before{content:"";position:absolute;inset:0;background:var(--rust);z-index:-1;filter:url(#rough);clip-path:polygon(1% 12%,98% 0,100% 82%,3% 100%)}
+  .banner h1{font-family:var(--brush);font-weight:400;font-size:clamp(3.8rem,11vw,8rem);line-height:.9;color:var(--paper);letter-spacing:.5px}
+  .lede{margin-top:34px;font-size:1.3rem;max-width:30ch;font-weight:600}
+  .lede em{font-style:normal;background:linear-gradient(transparent 62%,var(--butter) 62%)}
+  .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+  .btn{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:999px;padding:15px 26px;font-weight:800;font-size:1rem;text-decoration:none;transition:transform .15s}
+  .btn:active{transform:scale(.97)}
+  .btn-main{background:var(--espresso);color:var(--cream)}
+  .btn-main:hover{background:var(--maroon)}
+  .btn-alt{background:transparent;color:var(--espresso);box-shadow:inset 0 0 0 2px var(--espresso)}
+  .btn-alt:hover{background:var(--espresso);color:var(--cream)}
+  .btn svg{width:20px;height:20px;fill:currentColor}
+
+  /* promo clock */
+  .clock{background:var(--maroon);color:var(--cream);border-radius:30px;padding:26px 24px;text-align:center;position:relative}
+  .clock::after{content:"";position:absolute;inset:8px;border:2px dashed rgba(251,240,218,.35);border-radius:24px;pointer-events:none}
+  .clock .state{font-family:var(--brush);font-size:1.6rem;color:var(--butter);line-height:1.1}
+  .clock .dates{font-weight:800;font-size:2.4rem;line-height:1.1;margin:6px 0 2px}
+  .clock .month{opacity:.85;font-size:.95rem}
+  .units{display:flex;justify-content:center;gap:10px;margin-top:18px}
+  .unit{background:rgba(0,0,0,.25);border-radius:14px;padding:10px 0;width:64px}
+  .unit b{display:block;font-size:1.7rem;font-variant-numeric:tabular-nums;line-height:1.1}
+  .unit small{font-size:.72rem;opacity:.8}
+
+  /* strip */
+  .strip{background:var(--espresso);color:var(--butter);overflow:hidden;white-space:nowrap;font-family:var(--brush);font-size:1.5rem;padding:10px 0;transform:rotate(-1deg);margin:0 -10px}
+  .strip div{display:inline-block;animation:slide 28s linear infinite}
+  @keyframes slide{to{transform:translateX(-50%)}}
+
+  /* menu */
+  .menu{padding:80px 0 30px}
+  h2{font-family:var(--brush);font-weight:400;font-size:clamp(2.4rem,6vw,3.6rem);line-height:1;color:var(--rust)}
+  .sub{margin-top:8px;max-width:48ch;font-size:1.05rem}
+  .dishes{margin-top:34px;display:grid;gap:26px}
+  .dish{position:relative}
+  .dish-name{position:relative;display:inline-block;padding:8px 38px 12px 30px;margin-left:26px;margin-bottom:-18px;z-index:2;isolation:isolate;transform:rotate(-1.5deg)}
+  .dish-name::before{content:"";position:absolute;inset:0;background:var(--amber);z-index:-1;filter:url(#rough);clip-path:polygon(0 18%,100% 0,97% 90%,2% 100%)}
+  .dish-name h3{font-family:var(--brush);font-weight:400;font-size:2.2rem;line-height:1;color:var(--espresso)}
+  .pill{background:var(--maroon);color:var(--cream);border-radius:48px;display:grid;grid-template-columns:1fr 1fr;padding:34px 10px 22px}
+  .opt{padding:6px 26px;text-align:center}
+  .opt + .opt{border-left:2px solid rgba(251,240,218,.35)}
+  .opt .size{font-family:var(--brush);font-size:1.6rem;color:var(--butter);line-height:1}
+  .opt .price{font-weight:800;font-size:clamp(2rem,6vw,3.3rem);line-height:1.1;margin:2px 0 12px;letter-spacing:-.5px}
+  .opt .was{font-size:.9rem;opacity:.75;margin-top:-6px;margin-bottom:10px}
+  .opt .was s{text-decoration-thickness:2px}
+  .opt .price sup{font-size:.45em;vertical-align:.9em;margin-right:2px;font-weight:600}
+  .step{display:inline-flex;align-items:center;background:var(--cream);color:var(--espresso);border-radius:999px;padding:4px}
+  .step button{width:40px;height:40px;border-radius:50%;border:0;background:transparent;font-size:1.4rem;font-weight:800;color:var(--rust)}
+  .step button:hover{background:var(--butter)}
+  .step button:disabled{opacity:.25;cursor:default;background:transparent}
+  .step output{min-width:34px;font-weight:800;font-size:1.1rem;font-variant-numeric:tabular-nums}
+  .note{margin-top:22px;font-size:.92rem;opacity:.8}
+
+  /* order */
+  .order{padding:50px 0 80px}
+  .ticket{background:var(--paper);border-radius:28px;padding:30px;display:grid;grid-template-columns:1.1fr .9fr;gap:34px;position:relative;box-shadow:0 0 0 2px var(--espresso)}
+  .ticket::before,.ticket::after{content:"";position:absolute;top:50%;width:26px;height:26px;border-radius:50%;background:var(--cream);box-shadow:inset 0 0 0 2px var(--espresso);transform:translateY(-50%)}
+  .ticket::before{left:-14px;clip-path:inset(0 0 0 50%)}
+  .ticket::after{right:-14px;clip-path:inset(0 50% 0 0)}
+  .lines{list-style:none;margin-top:16px;min-height:90px}
+  .lines li{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:2px dotted rgba(58,23,13,.3);font-weight:600}
+  .lines li small{display:block;font-weight:400;opacity:.7}
+  .empty{padding:18px 0;opacity:.75}
+  .total{display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;font-weight:800}
+  .total strong{font-size:2.2rem;color:var(--rust)}
+  label{display:block;font-weight:700;font-size:.9rem;margin-bottom:6px}
+  input,textarea{width:100%;border:2px solid var(--espresso);background:#fff;border-radius:14px;padding:12px 14px;font:inherit;color:inherit}
+  textarea{resize:vertical;min-height:84px}
+  .field{margin-bottom:16px}
+  .sect{border:0;margin-bottom:14px;padding:0}
+  .sect legend{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1rem;margin-bottom:8px;padding:0}
+  .sect legend i{font-style:normal;font-family:var(--brush);font-weight:400;background:var(--rust);color:var(--paper);width:26px;height:26px;border-radius:50%;display:inline-grid;place-items:center;font-size:1.1rem;line-height:1}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  select{width:100%;border:2px solid var(--espresso);background:#fff;border-radius:14px;padding:12px 14px;font:inherit;color:inherit}
+  .btn-wa{width:100%;justify-content:center;background:#1FA855;color:#fff;margin-top:6px}
+  .btn-wa:hover{background:#17874a}
+  .btn-wa[aria-disabled="true"]{background:#9bb5a4;pointer-events:none}
+  .hint{font-size:.85rem;margin-top:10px;opacity:.75}
+  .clear{background:none;border:0;text-decoration:underline;font-size:.9rem;margin-top:8px;color:var(--maroon)}
+
+  /* visit */
+  .visit{background:var(--maroon);color:var(--cream);padding:70px 0 60px;border-radius:44px 44px 0 0}
+  .visit h2{color:var(--butter)}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px}
+  .card{border:2px dashed rgba(251,240,218,.45);border-radius:24px;padding:22px}
+  .card h3{font-family:var(--brush);font-weight:400;font-size:1.6rem;color:var(--butter);line-height:1.1;margin-bottom:8px}
+  .card p{font-size:1.02rem}
+  .card a{display:block;font-weight:800;font-size:1.25rem;text-decoration:none;padding:3px 0}
+  .card a:hover{color:var(--butter)}
+  .links{margin-top:12px}
+  .links a.small{font-size:1rem;text-decoration:underline;display:inline-block}
+  footer{margin-top:50px;font-size:.9rem;opacity:.8;display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
+
+  /* sticky bar */
+  .bar{position:fixed;left:12px;right:12px;bottom:12px;z-index:20;max-width:560px;margin:0 auto;background:var(--espresso);color:var(--cream);border-radius:999px;padding:8px 8px 8px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;transform:translateY(140%);transition:transform .3s}
+  .bar.show{transform:none}
+  .bar b{font-size:1.15rem}
+  .bar span{opacity:.8;font-size:.9rem;margin-left:8px}
+  .bar a{background:var(--butter);color:var(--espresso);border-radius:999px;padding:12px 22px;font-weight:800;text-decoration:none}
+
+  @media (max-width:860px){
+    .hero-grid{grid-template-columns:1fr}
+    .ticket{grid-template-columns:1fr;padding:24px}
+    .ticket::before,.ticket::after{display:none}
+    .cards{grid-template-columns:1fr}
+    nav{display:none}
+    .tag{font-size:1rem;padding:6px 14px}
+  }
+  @media (max-width:520px){
+    .banner{padding:20px 38px 28px 30px}
+    .opt{padding:6px 10px}
+    .pill{border-radius:36px}
+    .step button{width:36px;height:36px}
+    .tag{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .strip div{animation:none}
+    .bar{transition:none}
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.035 0.09" numOctaves="3" seed="4" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="14" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<div class="wrap">
+  <header>
+    <a class="logo" href="#top" aria-label="Mani's Kitchen home">Mani's<span>kitchen</span></a>
+    <nav aria-label="Main">
+      <a href="#menu">Menu</a>
+      <a href="#order">Your order</a>
+      <a href="#visit">Find us</a>
+    </nav>
+    <div class="tag">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.500a2.500 2.500 0 0 1 0 5z"/></svg>
+      Your number one food plug in Ho
+    </div>
+  </header>
+
+  <section class="hero" id="top">
+    <div class="hero-grid">
+      <div>
+        <div class="banner"><h1 id="heroTitle">Teza Promo</h1></div>
+        <p class="lede" id="lede">Get our delicious food at a <em>special price!</em></p>
+        <div class="cta-row">
+          <a class="btn btn-main" href="#menu">Pick your food</a>
+          <a class="btn btn-alt" id="heroWa" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.100L2 22l5-1.300A10 10 0 1 0 12 2zm5.200 14.100c-.2.600-1.300 1.200-1.800 1.200-.5.100-1 .2-3.300-.7-2.800-1.200-4.600-4-4.700-4.200-.1-.2-1.100-1.500-1.100-2.800s.7-2 1-2.300c.2-.3.500-.3.700-.3h.5c.2 0 .4 0 .6.500l.8 2c.1.200.1.400 0 .5l-.3.500-.4.400c-.1.200-.3.300-.1.600.2.300.8 1.300 1.700 2.100 1.200 1 2.100 1.300 2.400 1.500.3.100.4.100.6-.1l.8-1c.2-.3.400-.2.600-.1l1.900.9c.3.100.5.200.5.300.1.200.1.700-.1 1.300z"/></svg>
+            Chat on WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <aside class="clock" id="clock" aria-live="polite">
+        <div class="state" id="clockState">Promo starts in</div>
+        <div class="dates">3 &amp; 4</div>
+        <div class="month">October 2026</div>
+        <div class="units" id="units">
+          <div class="unit"><b id="d">0</b><small>days</small></div>
+          <div class="unit"><b id="h">0</b><small>hours</small></div>
+          <div class="unit"><b id="m">0</b><small>mins</small></div>
+          <div class="unit"><b id="s">0</b><small>secs</small></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</div>
+
+<div class="strip" aria-hidden="true">
+  <div>Fried Rice &nbsp;✦&nbsp; Jollof Rice &nbsp;✦&nbsp; Angwamo &nbsp;✦&nbsp; Fried Rice &nbsp;✦&nbsp; Jollof Rice &nbsp;✦&nbsp; Angwamo &nbsp;✦&nbsp; Fried Rice &nbsp;✦&nbsp; Jollof Rice &nbsp;✦&nbsp; Angwamo &nbsp;✦&nbsp; Fried Rice &nbsp;✦&nbsp; Jollof Rice &nbsp;✦&nbsp; Angwamo &nbsp;✦&nbsp; </div>
+</div>
+
+<main>
+  <section class="menu" id="menu">
+    <div class="wrap">
+      <h2 id="menuTitle">Teza Promo menu</h2>
+      <p class="sub">Choose a size, tap + to add it, then send your order to us on WhatsApp.</p>
+      <div class="dishes" id="dishes"></div>
+      <p class="note" id="menuNote">Promo prices for 3 &amp; 4 October 2026 only. Regular prices apply after.</p>
+    </div>
+  </section>
+
+  <section class="order" id="order">
+    <div class="wrap">
+      <div class="ticket">
+        <div>
+          <h2>Your order</h2>
+          <ul class="lines" id="lines"></ul>
+          <div class="total"><span>Total</span><strong id="total">GH₵0</strong></div>
+          <button class="clear" id="clear" type="button" hidden>Clear order</button>
+        </div>
+        <div>
+          <fieldset class="sect">
+            <legend><i>1</i> Your name</legend>
+            <input id="name" autocomplete="name" placeholder="e.g. Kofi" required>
+          </fieldset>
+          <fieldset class="sect">
+            <legend><i>2</i> Pickup time</legend>
+            <div class="row">
+              <div>
+                <label for="day" class="sr">Day</label>
+                <select id="day">
+                  <option value="">Day</option>
+                </select>
+              </div>
+              <div>
+                <label for="time" class="sr">Time</label>
+                <input id="time" type="time">
+              </div>
+            </div>
+          </fieldset>
+          <fieldset class="sect">
+            <legend><i>3</i> Address</legend>
+            <input id="addr" autocomplete="street-address" placeholder="Your address or nearest landmark">
+          </fieldset>
+          <div class="field">
+            <label for="msg">Anything else? (optional)</label>
+            <textarea id="msg" placeholder="Extra requests"></textarea>
+          </div>
+          <a class="btn btn-wa" id="send" href="#" target="_blank" rel="noopener" aria-disabled="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true" width="20" height="20" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.100L2 22l5-1.300A10 10 0 1 0 12 2zm5.200 14.100c-.2.600-1.300 1.200-1.800 1.200-.5.100-1 .2-3.300-.7-2.800-1.200-4.600-4-4.700-4.200-.1-.2-1.100-1.500-1.100-2.800s.7-2 1-2.300c.2-.3.500-.3.700-.3h.5c.2 0 .4 0 .6.500l.8 2c.1.200.1.400 0 .5l-.3.500-.4.400c-.1.200-.3.300-.1.600.2.300.8 1.300 1.700 2.100 1.200 1 2.100 1.300 2.400 1.500.3.100.4.100.6-.1l.8-1c.2-.3.400-.2.600-.1l1.900.9c.3.100.5.200.5.300.1.200.1.700-.1 1.300z"/></svg>
+            Send order on WhatsApp
+          </a>
+          <p class="hint" id="hint">Add at least one item to send your order.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<section class="visit" id="visit">
+  <div class="wrap">
+    <h2>Find us in Ho</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Call or WhatsApp</h3>
+        <a href="tel:+233545090250">0545 090 250</a>
+        <a href="tel:+233546396733">0546 396 733</a>
+      </div>
+      <div class="card" id="promoCard">
+        <h3>Promo dates</h3>
+        <p><b>3 &amp; 4 October 2026</b></p>
+        <p>Teza Promo prices on fried rice, jollof rice and angwamo. Regular prices apply after.</p>
+      </div>
+      <div class="card">
+        <h3>Where we are</h3>
+        <p>New McCollins Junction, adjacent Delson Royal Hotel, Ho.</p>
+        <div class="links"><a class="small" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Delson+Royal+Hotel+Ho+Ghana">Open in Google Maps</a></div>
+      </div>
+    </div>
+    <footer>
+      <span>Mani's Kitchen. Your number one food plug in Ho.</span>
+      <span>&copy; 2026</span>
+    </footer>
+  </div>
+</section>
+
+<div class="bar" id="bar" role="region" aria-label="Order summary">
+  <div><b id="barTotal">GH₵0</b><span id="barCount">0 items</span></div>
+  <a href="#order">Review order</a>
+</div>
+
+<script>
+  const WA = "233546396733";
+  // Promo window (Accra is UTC+0). Regular prices show before and after; promo prices only while it is live. A countdown shows before the promo.
+  const START = Date.UTC(2026, 9, 3, 0, 0, 0);
+  const END = Date.UTC(2026, 9, 5, 0, 0, 0);
+  // Add ?mode=regular or ?mode=promo to the page address to preview either price list.
+  const forced = new URLSearchParams(location.search).get("mode");
+  const getMode = () => forced === "regular" ? "regular" : forced === "promo" ? "promo" : (Date.now() >= START && Date.now() < END ? "promo" : "regular");
+  const getPhase = () => Date.now() < START ? "before" : Date.now() < END ? "live" : "after";
+  const phase = getPhase();
+  const mode = getMode();
+  const isPromo = mode === "promo";
+
+  const MENU = [
+    {name:"Fried Rice", opts:[
+      {id:"fr-r", promo:{size:"Regular",price:50}, reg:{size:"Regular",price:55}},
+      {id:"fr-j", promo:{size:"Jumbo",price:80}, reg:{size:"Jumbo",price:85}}]},
+    {name:"Jollof Rice", opts:[
+      {id:"jr-r", promo:{size:"Regular",price:50}, reg:{size:"Regular",price:60}},
+      {id:"jr-j", promo:{size:"Jumbo",price:80}, reg:{size:"Jumbo",price:85}}]},
+    {name:"Angwamo", opts:[
+      {id:"an-r", promo:{size:"Regular",price:50}, reg:{size:"Regular",price:50}},
+      {id:"an-l", promo:{size:"Loaded",price:70}, reg:{size:"Fully loaded",price:70}}]}
+  ];
+  const qty = {};
+  const flat = {};
+  MENU.forEach(d => d.opts.forEach(o => {
+    const cur = isPromo ? o.promo : o.reg;
+    o.size = cur.size; o.price = cur.price; o.was = isPromo && o.reg.price !== o.promo.price ? o.reg.price : null;
+    qty[o.id] = 0; flat[o.id] = {...o, dish:d.name};
+  }));
+
+  const $ = id => document.getElementById(id);
+  const money = n => "GH₵" + n;
+
+  // render menu
+  $("dishes").innerHTML = MENU.map(d => `
+    <div class="dish">
+      <div class="dish-name"><h3>${d.name}</h3></div>
+      <div class="pill">
+        ${d.opts.map(o => `
+          <div class="opt">
+            <div class="size">${o.size}</div>
+            <div class="price"><sup>GH₵</sup>${o.price}</div>
+            ${o.was ? `<div class="was">Regular <s>GH₵${o.was}</s></div>` : ""}
+            <div class="step" role="group" aria-label="${o.size} ${d.name} quantity">
+              <button type="button" data-id="${o.id}" data-d="-1" aria-label="Remove one ${o.size} ${d.name}" disabled>−</button>
+              <output id="q-${o.id}" aria-live="polite">0</output>
+              <button type="button" data-id="${o.id}" data-d="1" aria-label="Add one ${o.size} ${d.name}">+</button>
+            </div>
+          </div>`).join("")}
+      </div>
+    </div>`).join("");
+
+  $("dishes").addEventListener("click", e => {
+    const b = e.target.closest("button[data-id]");
+    if(!b) return;
+    const id = b.dataset.id;
+    qty[id] = Math.max(0, Math.min(50, qty[id] + Number(b.dataset.d)));
+    update();
+  });
+  $("clear").addEventListener("click", () => { Object.keys(qty).forEach(k => qty[k] = 0); update(); });
+  ["name","msg","day","time","addr"].forEach(id => { $(id).addEventListener("input", update); $(id).addEventListener("change", update); });
+
+  function pickupText(){
+    const d = $("day").value, tm = $("time").value;
+    if(!d && !tm) return "";
+    let t12 = "";
+    if(tm){ const [h,m] = tm.split(":").map(Number); t12 = ((h%12)||12) + ":" + String(m).padStart(2,"0") + " " + (h<12?"AM":"PM"); }
+    return [d, t12].filter(Boolean).join(", ");
+  }
+
+  function buildMessage(){
+    const items = Object.keys(qty).filter(k => qty[k] > 0);
+    if(!items.length) return isPromo ? "Hello Mani's Kitchen, I'd like to ask about the Teza Promo." : "Hello Mani's Kitchen, I'd like to ask about your menu.";
+    const name = $("name").value.trim();
+    const note = $("msg").value.trim();
+    const addr = $("addr").value.trim();
+    const pick = pickupText();
+    let t = (isPromo ? "Hello Mani's Kitchen, I'd like to order for the Teza Promo:\n\n" : "Hello Mani's Kitchen, I'd like to place an order:\n\n");
+    items.forEach(k => { const o = flat[k]; t += `• ${qty[k]} x ${o.size} ${o.dish} (${money(o.price * qty[k])})\n`; });
+    const total = items.reduce((s,k) => s + qty[k]*flat[k].price, 0);
+    t += `\nTotal: ${money(total)}`;
+    if(name) t += `\nName: ${name}`;
+    if(pick) t += `\nPickup time: ${pick}`;
+    if(addr) t += `\nAddress: ${addr}`;
+    if(note) t += `\nNote: ${note}`;
+    return t;
+  }
+
+  function update(){
+    let count = 0, total = 0;
+    const rows = [];
+    Object.keys(qty).forEach(k => {
+      const o = flat[k];
+      $("q-"+k).textContent = qty[k];
+      document.querySelector(`button[data-id="${k}"][data-d="-1"]`).disabled = qty[k] === 0;
+      if(qty[k] > 0){
+        count += qty[k]; total += qty[k]*o.price;
+        rows.push(`<li><span>${qty[k]} × ${o.dish}<small>${o.size}</small></span><span>${money(qty[k]*o.price)}</span></li>`);
+      }
+    });
+    $("lines").innerHTML = rows.length ? rows.join("") : '<li class="empty">Nothing here yet. Add food from the menu above.</li>';
+    $("total").textContent = money(total);
+    $("clear").hidden = !rows.length;
+    $("barTotal").textContent = money(total);
+    $("barCount").textContent = count + (count === 1 ? " item" : " items");
+    $("bar").classList.toggle("show", count > 0);
+    const send = $("send");
+    const missing = [];
+    if(!rows.length) missing.push("at least one item");
+    if(!$("name").value.trim()) missing.push("your name");
+    if(!$("day").value || !$("time").value) missing.push("a pickup day and time");
+    const ready = missing.length === 0;
+    send.setAttribute("aria-disabled", ready ? "false" : "true");
+    send.href = ready ? `https://wa.me/${WA}?text=${encodeURIComponent(buildMessage())}` : "#";
+    $("hint").textContent = ready ? "WhatsApp will open with your order ready to send." : "Still needed: " + missing.join(", ") + ".";
+  }
+  $("heroWa").href = `https://wa.me/${WA}?text=${encodeURIComponent(isPromo ? "Hello Mani's Kitchen, I'd like to ask about the Teza Promo." : "Hello Mani's Kitchen, I'd like to ask about your menu.")}`;
+  // Day options: promo days while promo is on, otherwise today + next two days
+  (function(){
+    const sel = $("day");
+    let days = [];
+    if(isPromo){ days = ["Saturday 3 Oct","Sunday 4 Oct"]; }
+    else {
+      const fmt = new Intl.DateTimeFormat("en-GB",{weekday:"long",day:"numeric",month:"short",timeZone:"Africa/Accra"});
+      for(let i=0;i<3;i++){ const t = fmt.format(new Date(Date.now()+i*86400000)); days.push(i===0 ? "Today, "+t : i===1 ? "Tomorrow, "+t : t); }
+    }
+    sel.innerHTML = '<option value="">Day</option>' + days.map(d => `<option>${d}</option>`).join("");
+  })();
+
+  if(!isPromo){
+    $("heroTitle").textContent = "Order Now";
+    $("lede").innerHTML = "Fried rice, jollof rice and angwamo. <em>Your number one food plug in Ho.</em>";
+    $("menuTitle").textContent = "Our menu";
+    $("menuNote").textContent = phase === "before" ? "Regular prices. Teza Promo prices apply on 3 & 4 October only." : "Regular prices.";
+    if(phase === "after"){
+      $("clock").innerHTML = '<div class="state">Order on WhatsApp</div><div class="dates" style="font-size:1.9rem">0546 396 733</div><div class="month">New McCollins Junction, Ho</div>';
+      $("promoCard").hidden = true;
+      document.querySelector(".cards").style.gridTemplateColumns = "repeat(auto-fit,minmax(240px,1fr))";
+    }
+  }
+  update();
+
+  // promo countdown (Accra time is UTC+0, so UTC dates match local Ho time)
+  function tick(){
+    if(!forced && getPhase() !== phase){ location.reload(); return; }
+    if(!$("d")) return;
+    const now = Date.now();
+    const before = now < START;
+    const target = before ? START : END;
+    $("clockState").textContent = before ? "Teza Promo starts in" : "Promo is on! Ends in";
+    let diff = Math.max(0, Math.floor((target - now) / 1000));
+    $("d").textContent = Math.floor(diff / 86400); diff %= 86400;
+    $("h").textContent = String(Math.floor(diff / 3600)).padStart(2,"0"); diff %= 3600;
+    $("m").textContent = String(Math.floor(diff / 60)).padStart(2,"0");
+    $("s").textContent = String(diff % 60).padStart(2,"0");
+  }
+  tick(); setInterval(tick, 1000);
+</script>
+</body>
+</html>
