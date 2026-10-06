@@ -148,8 +148,10 @@
   .badges{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 6px}
   .badges span{background:#E3EFD9;color:#1F4F2D;border-radius:999px;padding:7px 14px;font-weight:700;font-size:.88rem}
   .yog-list{margin-top:14px;background:#fff;border-radius:22px;box-shadow:0 0 0 2px var(--espresso);padding:6px 18px}
-  .yrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:2px dotted rgba(58,23,13,.25)}
-  .yrow:last-child{border-bottom:0}
+  .yblock{padding:12px 0 4px;border-bottom:2px dotted rgba(58,23,13,.25)}
+  .yblock:last-child{border-bottom:0}
+  .yblock h3{font-size:1.02rem;font-weight:800;color:#1F4F2D}
+  .yrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0}
   .yrow b{display:block}
   .yrow small{opacity:.7}
   .yrow .step{box-shadow:inset 0 0 0 2px var(--espresso);background:var(--paper)}
@@ -275,7 +277,6 @@
         <p class="sub">Delicious yoghurt options, made with quality ingredients for your health and happiness.</p>
         <div class="badges"><span>100% Natural</span><span>Rich in probiotics</span><span>Good for gut health</span></div>
         <div class="yog-list" id="yogList"></div>
-        <p class="note">Yoghurt prices are confirmed on WhatsApp when you send your order.</p>
       </div>
     </div>
   </section>
@@ -373,13 +374,13 @@
     {name:"Jollof Rice", opts:[{id:"jr-r", size:"Regular", price:60}, {id:"jr-j", size:"Jumbo", price:85}]},
     {name:"Angwamo", opts:[{id:"an-r", size:"Regular", price:50}, {id:"an-l", size:"Fully loaded", price:70}]}
   ];
-  // Yoghurt: add a price (a number) to any item below once prices are decided. null = "price confirmed on WhatsApp".
+  // Yoghurt price list: [size, price in GH₵]
   const YOG = [
-    {id:"yg-greek", name:"Greek Yoghurt", price:null},
-    {id:"yg-unsw", name:"Unsweetened Yoghurt", price:null},
-    {id:"yg-sweet", name:"Sweetened Yoghurt", price:null},
-    {id:"yg-van", name:"Vanilla Flavoured Yoghurt", price:null},
-    {id:"yg-straw", name:"Strawberry Flavoured Yoghurt", price:null}
+    {key:"unsw",  name:"Unsweetened Yoghurt",          sizes:[["300ml",10],["1L",70],["2L",140]]},
+    {key:"van",   name:"Vanilla Flavoured Yoghurt",    sizes:[["300ml",10],["1L",70],["2L",140]]},
+    {key:"straw", name:"Strawberry Flavoured Yoghurt", sizes:[["300ml",10],["1L",70],["2L",140]]},
+    {key:"prob",  name:"Probiotic Yoghurt",            sizes:[["1L",70],["2L",140]]},
+    {key:"greek", name:"Greek Yoghurt",                sizes:[["1L",75],["2L",150]]}
   ];
   // Public holidays when Mani's is open (YYYY-MM-DD). Update when new holidays are announced.
   const HOLIDAYS = ["2026-12-04","2026-12-25","2026-12-26","2027-01-01"];
@@ -388,7 +389,10 @@
   MENU.forEach(d => d.opts.forEach(o => {
     qty[o.id] = 0; flat[o.id] = {id:o.id, price:o.price, title:d.name, sub:o.size, label:o.size+" "+d.name};
   }));
-  YOG.forEach(y => { qty[y.id] = 0; flat[y.id] = {id:y.id, price:y.price, title:y.name, sub:"Yoghurt", label:y.name}; });
+  YOG.forEach(y => y.sizes.forEach(([size, price]) => {
+    const id = "yg-" + y.key + "-" + size.toLowerCase();
+    qty[id] = 0; flat[id] = {id, price, title:y.name, sub:size, label:size + " " + y.name};
+  }));
 
   const $ = id => document.getElementById(id);
   const money = n => "GH₵" + n;
@@ -412,13 +416,17 @@
     </div>`).join("");
 
   $("yogList").innerHTML = YOG.map(y => `
-    <div class="yrow">
-      <div><b>${y.name}</b><small>${y.price == null ? "Price on request" : money(y.price)}</small></div>
-      <div class="step" role="group" aria-label="${y.name} quantity">
-        <button type="button" data-id="${y.id}" data-d="-1" aria-label="Remove one ${y.name}" disabled>−</button>
-        <output id="q-${y.id}" aria-live="polite">0</output>
-        <button type="button" data-id="${y.id}" data-d="1" aria-label="Add one ${y.name}">+</button>
-      </div>
+    <div class="yblock">
+      <h3>${y.name}</h3>
+      ${y.sizes.map(([size, price]) => { const id = "yg-" + y.key + "-" + size.toLowerCase(); return `
+      <div class="yrow">
+        <div><b>${size}</b><small>${money(price)}</small></div>
+        <div class="step" role="group" aria-label="${size} ${y.name} quantity">
+          <button type="button" data-id="${id}" data-d="-1" aria-label="Remove one ${size} ${y.name}" disabled>−</button>
+          <output id="q-${id}" aria-live="polite">0</output>
+          <button type="button" data-id="${id}" data-d="1" aria-label="Add one ${size} ${y.name}">+</button>
+        </div>
+      </div>`; }).join("")}
     </div>`).join("");
 
   document.addEventListener("click", e => {
